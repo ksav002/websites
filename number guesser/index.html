@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guesser</title>
+</head>
+<body>
+    <h1>Number Guesser</h1>
+    <p>
+        Rules:
+        <ol>
+            <li>You have unlimited guesses until you find the number.</li>
+            <li>Guess a four digit number</li>
+            <li>You will be told how many digits are in the correct place</li>
+        </ol>
+    </p>
+    
+    <input type="number" id="numberInput">
+    <input type="button" value="Submit" id="submitButton">
+
+    <p id="remark"></p>
+    <script>
+        let number = Math.floor(Math.random() * 10000);
+        let numberWithLeadingZeros = number.toString().padStart(4, '0');
+        console.log(numberWithLeadingZeros);
+
+        function compareDigits(guess, actualNumber){
+            let correctPositions = [];
+            n = 4;
+            for (let i= 0; i < n; i++){
+                if (guess[i] == actualNumber[i]) {
+                    correctPositions.push(i);
+                }
+            }
+            return correctPositions;
+        }
+
+        document.getElementById('submitButton').addEventListener('click', function() {
+            let guess = document.getElementById('numberInput').value;
+            
+            if (guess.length === 4) {
+                let correctPositions = compareDigits(guess, numberWithLeadingZeros);
+                if (correctPositions.length === 4) {
+                    remark = guess + " - You have guessed the correct number";
+                    document.getElementById('remark').innerHTML = remark;
+                    return;
+                } else if (correctPositions.length === 3) {
+                    remark = guess + " - 3 digits are in the correct spot";
+                } else if (correctPositions.length === 2){
+                    remark = guess + " - 2 digits are in the correct spot";
+                } else if (correctPositions.length === 1) {
+                    remark = guess + " - 1 digit is in the correct spot";
+                } else {
+                    remark = guess + " - No digits are in the correct spot";
+                }
+                document.getElementById('remark').innerHTML += remark+ '<br>';
+
+            } else {
+                alert("Please enter exactly 4 digits.");
+            }
+        });
+    </script>
+
+</body>
+</html>
